@@ -79,14 +79,7 @@ class Tile:
                 tile.suroundingFlags += 1
 
     def reveal(self) -> None:
-        if self.revealed:
-            print(f'{self.suroundingMines=}, {self.suroundingFlags=}')
-            if self.suroundingFlags == self.suroundingMines:
-                for tile in self.surounding:
-                    verify = tile.reveal()
-                    if not verify:
-                        return False
-                
+        if self.revealed:                
             return True
         
 

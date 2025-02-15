@@ -8,7 +8,7 @@ class Game():
         self.screen = pygame.display.set_mode(self.size)
         pygame.display.set_caption("Demineur",)
 
-        self.active = Demineur(self.screen, (10,10), 20)
+        self.active = Demineur(self.screen, (30,25), 175)
 
     
 
