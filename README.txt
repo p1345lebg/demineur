@@ -42,6 +42,6 @@ Les contributions sont les bienvenues ! Veuillez soumettre une pull request ou o
 
 ## Auteurs
 
-- Michel Le Pb - Développeur principal
+- p1345lebg - Développeur principal
 
 Merci d'avoir joué à notre jeu de Démineur !
