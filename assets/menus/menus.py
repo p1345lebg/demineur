@@ -1,0 +1,7 @@
+menus = {
+    "default" : {
+        "buttons" : {
+            'tl' : []
+        }
+    }
+}
