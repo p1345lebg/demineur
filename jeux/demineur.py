@@ -1,6 +1,6 @@
 import pygame
 import os
-from random import randint
+from random import sample
 
 class Tile:
     def __init__(self, coordonatesGrid : tuple[int,int], size:int) -> None:
@@ -147,36 +147,35 @@ class Demineur:
             for j in range(self.gridSize[1]):
                 self.tiles.add(Tile((i,j), self.tile_size))
 
-    def generate_mines(self, tile_centered : Tile) -> None:
+    
+
+    def generate_mines(self, tile_centered: Tile) -> None:
         self.mines_not_generated = False
-        tiles : list[Tile] = list(self.tiles.copy())
-        temporary : set[Tile] = set()
-        for tile in tiles:
-            if (tile_centered.coordonatesGrid[0] + 1 >= tile.coordonatesGrid[0] >= tile_centered.coordonatesGrid[0] - 1) and \
-               (tile_centered.coordonatesGrid[1] + 1 >= tile.coordonatesGrid[1] >= tile_centered.coordonatesGrid[1] - 1):
-                temporary.add(tile)
-        for tile in temporary:
-            tiles.remove(tile)
         
-        mines : int = self.nbMines
-        n = len(tiles)
-        while mines > 0 and n > 0:
-            x = randint(0, n-1)
-            for tile in self.tiles:
-                if tile == tiles[x]:
-                    tile.isMine = True
-                    mines -= 1
-                    break
+        excluded_tiles = {
+            tile for tile in self.tiles 
+            if abs(tile.coordonatesGrid[0] - tile_centered.coordonatesGrid[0]) <= 1 and 
+            abs(tile.coordonatesGrid[1] - tile_centered.coordonatesGrid[1]) <= 1
+        }
+        
+        # Liste des tuiles où placer les mines
+        available_tiles = list(set(self.tiles) - excluded_tiles)
+        
+        # Placer les mines sur un échantillon aléatoire de tuiles
+        for tile in sample(available_tiles, min(self.nbMines, len(available_tiles))):
+            tile.isMine = True
 
-            tiles.remove(tile)
-            n -= 1
-
+        # Mise à jour des tuiles environnantes
+        tile_dict = {(tile.coordonatesGrid[0], tile.coordonatesGrid[1]): tile for tile in self.tiles}
+        
         for tile in self.tiles:
-            for tile2 in self.tiles:
-                if (tile.coordonatesGrid[0] + 1 >= tile2.coordonatesGrid[0] >= tile.coordonatesGrid[0] - 1) and \
-                   (tile.coordonatesGrid[1] + 1 >= tile2.coordonatesGrid[1] >= tile.coordonatesGrid[1] - 1) and \
-                   tile != tile2:
-                    tile.add_surounding(tile2)
+            neighbors = [
+                tile_dict.get((tile.coordonatesGrid[0] + dx, tile.coordonatesGrid[1] + dy))
+                for dx in (-1, 0, 1) for dy in (-1, 0, 1) if (dx, dy) != (0, 0)
+            ]
+            for neighbor in filter(None, neighbors):
+                tile.add_surounding(neighbor)
+
 
     def update(self, events) -> None:
         for event in events:
