@@ -17,7 +17,7 @@ Le Démineur est un jeu de réflexion dans lequel le joueur doit découvrir tout
 
 1. Clonez ce dépôt sur votre machine locale :
     ```
-    git clone https://github.com/votre-utilisateur/votre-repo.git
+    git clone https://github.com/p135lebg/demineur.git
     ```
 2. Accédez au répertoire du projet :
     ```
